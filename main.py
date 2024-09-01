@@ -25,7 +25,7 @@ class WDPoisson(nn.Module):
     def forward_simulate(self,x):
         X = x[:,:,0]
         Y = x[:,:,1]
-        y = torch.sin(2*torch.pi*X)
+        y = torch.sin(X)
         return y
 
 if __name__ == '__main__':
@@ -40,8 +40,8 @@ if __name__ == '__main__':
     # XY = torch.cat((X, Y), dim=2)
 
     #XY = torch.cat((X,Y),1)
-    # f = lambda x, y: torch.sin(2*torch.pi*x)
-    f = lambda x, y: x ** 2 #+ y ** 2
+    f = lambda x, y: torch.sin(x)
+    #f = lambda x, y: x ** 3 #+ y ** 2
     model = WDPoisson(X.shape[0],X.shape[1],x[-1],y[-1],10)
     y = f(X,Y)
     plot_density_surface(y.T,(int(X.shape[0]),int(X.shape[1])),
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     df_dX = torch.sum(torch.flatten(vec_df_dX,start_dim=0,end_dim=1),dim=0)
 
     plot_density_surface(df_dX.T, (int(X.shape[0]), int(X.shape[1])),
-                         x[1] - x[0], 'sin(X)')
+                         x[1] - x[0], 'df_dX')
     plt.show(block=True)
     df_dY = torch.sum(torch.flatten(vec_df_dY, start_dim=0, end_dim=1), dim=0)
     plot_density_surface(df_dY.T, (int(X.shape[0]), int(X.shape[1])),
