@@ -35,20 +35,22 @@ if __name__ == '__main__':
     X,Y = np.meshgrid(x,y)
     X = torch.from_numpy(X)#.reshape(X.shape[0]*X.shape[0])
     Y = torch.from_numpy(Y)#.reshape(Y.shape[0]*Y.shape[0])
-    X = X.reshape(X.shape[0], X.shape[1], 1)
-    Y = Y.reshape(Y.shape[0], Y.shape[1], 1)
-    XY = torch.cat((X, Y), dim=2)
+    # X = X.reshape(X.shape[0], X.shape[1], 1)
+    # Y = Y.reshape(Y.shape[0], Y.shape[1], 1)
+    # XY = torch.cat((X, Y), dim=2)
 
     #XY = torch.cat((X,Y),1)
+    f = lambda x, y: torch.sin(2*torch.pi*x)
     model = WDPoisson(X.shape[0],X.shape[1],x[-1],y[-1],10)
-    y = model.forward_simulate(XY)
+    y = f(X,Y)
     plot_density_surface(y.T,(int(X.shape[0]),int(X.shape[1])),
                          x[1]-x[0],'sin(X)')
     plt.show(block=True)
     qq = 0
-    f = lambda x, y: x ** 2 + y ** 2
-    f44 = f(torch.ones((4, 4)), 2 * torch.ones((4, 4)))
-    j44 = jacobian(f, inputs=(torch.ones((4, 4)), 2 * torch.ones((4, 4))))
+    # f = lambda x, y: x ** 2 + y ** 2
+
+    f44 = f(X, Y)
+    j44 = jacobian(f, inputs=(X,Y))
     vec_df_dX = j44[0] # X = (torch.ones((2, 2))     # vector of derivatives of f wrt all X matric components
     vec_df_dY = j44[1] # Y = 4 * torch.ones((4, 4))
     df_dX = torch.sum(torch.flatten(vec_df_dX,start_dim=0,end_dim=1),dim=0)
