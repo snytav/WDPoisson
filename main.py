@@ -40,7 +40,8 @@ if __name__ == '__main__':
     # XY = torch.cat((X, Y), dim=2)
 
     #XY = torch.cat((X,Y),1)
-    f = lambda x, y: torch.sin(2*torch.pi*x)
+    # f = lambda x, y: torch.sin(2*torch.pi*x)
+    f = lambda x, y: x ** 2 #+ y ** 2
     model = WDPoisson(X.shape[0],X.shape[1],x[-1],y[-1],10)
     y = f(X,Y)
     plot_density_surface(y.T,(int(X.shape[0]),int(X.shape[1])),
