@@ -52,7 +52,15 @@ if __name__ == '__main__':
     vec_df_dX = j44[0] # X = (torch.ones((2, 2))     # vector of derivatives of f wrt all X matric components
     vec_df_dY = j44[1] # Y = 4 * torch.ones((4, 4))
     df_dX = torch.sum(torch.flatten(vec_df_dX,start_dim=0,end_dim=1),dim=0)
+
+    plot_density_surface(df_dX.T, (int(X.shape[0]), int(X.shape[1])),
+                         x[1] - x[0], 'sin(X)')
+    plt.show(block=True)
     df_dY = torch.sum(torch.flatten(vec_df_dY, start_dim=0, end_dim=1), dim=0)
+    plot_density_surface(df_dY.T, (int(X.shape[0]), int(X.shape[1])),
+                         x[1] - x[0], 'sin(X)')
+    plt.show(block=True)
+
     # in order to get the plain df_dX  a sum of vec_df_dX components must be performed with inidices corresponding
     # the position of nonzero element in matrix
     # df_dX = np.zeros_like()
